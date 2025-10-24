@@ -969,6 +969,7 @@
                 </div>
             </div>
 
+
             <div class="input-group">
                 <h3>⏱️ Service Time Configuration</h3>
                 <div class="form-row">
@@ -1020,6 +1021,7 @@
     </div>
 
     <script>
+        // convert a comma-separated text input into an array of numbers.
         function parseInput(inputStr) {
             return inputStr.split(',').map(s => parseFloat(s.trim())).filter(n => !isNaN(n));
         }
@@ -1034,7 +1036,7 @@
 
             const errorDiv = document.getElementById('errorMessage');
             errorDiv.classList.add('hidden');
-
+// number of times must match number of probabilities for inter-arrival and service. If mismatch, show error and return null.
             if (interArrivalTimes.length !== interArrivalProbs.length) {
                 errorDiv.textContent = 'Error: Number of inter-arrival times must match number of probabilities';
                 errorDiv.classList.remove('hidden');
@@ -1047,6 +1049,7 @@
                 return null;
             }
 
+            // check if probabilities sum to 1.0 for inter-arrival and service. If not, show error and return null.
             const interArrivalSum = interArrivalProbs.reduce((a, b) => a + b, 0);
             if (Math.abs(interArrivalSum - 1.0) > 0.01) {
                 errorDiv.textContent = 'Error: Inter-arrival probabilities must sum to 1.0';
@@ -1054,6 +1057,7 @@
                 return null;
             }
 
+            // check if probabilities sum to 1.0 for service. If not, show error and return null.
             const serviceSum = serviceProbs.reduce((a, b) => a + b, 0);
             if (Math.abs(serviceSum - 1.0) > 0.01) {
                 errorDiv.textContent = 'Error: Service probabilities must sum to 1.0';
@@ -1061,12 +1065,14 @@
                 return null;
             }
 
+            // check if random numbers arrays are not empty. If empty, show error and return null.
             if (interArrivalRN.length === 0 || serviceRN.length === 0) {
                 errorDiv.textContent = 'Error: Random numbers cannot be empty';
                 errorDiv.classList.remove('hidden');
                 return null;
             }
 
+            // return all validated inputs as an object.
             return {
                 interArrivalTimes,
                 interArrivalProbs,
@@ -1077,24 +1083,30 @@
             };
         }
 
+        // generate distribution table HTML and distribution data based on times, probabilities, and type (inter-arrival or service).
         function generateDistributionTable(times, probs, type) {
             let cumProb = 0;
+            // create an array to hold distribution data.
             const distribution = [];
-            
+            // calculate cumulative probabilities and random digit ranges.
             for (let i = 0; i < times.length; i++) {
                 const prevCumProb = cumProb;
                 cumProb += probs[i];
+                // calculate min and max for random digit assignments.
                 const min = Math.round(prevCumProb * 100);
+                //
                 const max = i === times.length - 1 ? 100 : Math.round(cumProb * 100);
                 
                 distribution.push({
                     time: times[i],
                     prob: probs[i],
+                    // toFixed(2) rounds a number to 2 decimal places and converts it to a string.
                     cumProb: cumProb.toFixed(2),
                     range: `${min} - ${max === 100 ? '00' : max}`
                 });
             }
 
+            // create HTML table for the distribution.
             let tableHTML = `
                 <table>
                     <thead>
@@ -1107,7 +1119,7 @@
                     </thead>
                     <tbody>
             `;
-
+// populate table rows with distribution data.
             distribution.forEach(d => {
                 tableHTML += `
                     <tr>
@@ -1120,16 +1132,21 @@
             });
 
             tableHTML += '</tbody></table>';
+            // return both HTML and distribution data.
             return { html: tableHTML, distribution };
         }
 
+        // get time corresponding to a random number based on the distribution table.
         function getTimeFromRN(rn, distribution) {
             for (let item of distribution) {
+                //Splits the string "21 - 50" into two parts: ["21", "50"]
+                //Converts them to numbers → [21, 50]
                 const [min, max] = item.range.split(' - ').map(s => s === '00' ? 100 : parseInt(s));
                 if (rn >= min && rn <= max) {
                     return item.time;
                 }
             }
+            // If no matching range is found, return the last item's time.
             return distribution[distribution.length - 1].time;
         }
 
@@ -1143,23 +1160,29 @@
                 inputs.interArrivalProbs, 
                 'inter'
             );
+            // generate service time distribution table
             const serviceDist = generateDistributionTable(
                 inputs.serviceTimes, 
                 inputs.serviceProbs, 
                 'service'
             );
 
+            // display generated tables
             document.getElementById('interArrivalTable').innerHTML = interArrivalDist.html;
             document.getElementById('serviceTable').innerHTML = serviceDist.html;
+            // show the generated tables section
             document.getElementById('generatedTables').classList.remove('hidden');
 
             // Run simulation
+            // determine number of customers based on random numbers provided
             const numCustomers = Math.max(inputs.interArrivalRN.length + 1, inputs.serviceRN.length);
+            // array to hold customer data
             const customers = [];
             
             for (let i = 0; i < numCustomers; i++) {
                 const customer = {
                     id: i + 1,
+                    // inter-arrival time random number
                     interArrivalRN: i === 0 ? '-' : inputs.interArrivalRN[i - 1],
                     timeBetweenArrival: i === 0 ? 0 : getTimeFromRN(inputs.interArrivalRN[i - 1], interArrivalDist.distribution),
                     arrivalTime: 0,
