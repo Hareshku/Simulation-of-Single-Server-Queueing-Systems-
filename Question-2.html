@@ -297,7 +297,7 @@
                 </div>
                 <div>
                     <label>Random Numbers for Inter-arrivals (comma-separated)</label>
-                    <input type="text" id="interArrivalRN" value="42, 19, 67, 85, 31, 56, 90, 24, 73, 48, 61, 35, 79, 28, 51">
+                    <input type="text" id="interArrivalRN" value="42, 19, 67, 85, 31, 56, 90, 24, 73, 48, 61, 35, 79, 28">
                     <div class="help-text">Enter random numbers (0-100)</div>
                 </div>
             </div>
@@ -426,7 +426,7 @@
                 const prevCumProb = cumProb;
                 cumProb += probs[i];
                 // calculate min and max for random digit assignments.
-                const min = Math.round(prevCumProb * 100);
+                const min = Math.round(prevCumProb * 100)+1;
                 //
                 const max = i === times.length - 1 ? 100 : Math.round(cumProb * 100);
                 
@@ -639,12 +639,12 @@
                 <div class="card">
                     <h3>6. Customer 12 Arrival Time</h3>
                     <div class="value">${stats.customer12ArrivalTime}</div>
-                    <div class="unit">${stats.customer12ArrivalTime !== 'N/A' ? 'min after 9:00 AM' : ''}</div>
+                    <div class="unit">${stats.customer12ArrivalTime !== 'N/A' ? 'min' : ''}</div>
                 </div>
                 <div class="card">
                     <h3>7. Customer 15 Service Start</h3>
                     <div class="value">${stats.customer15ServiceStartTime}</div>
-                    <div class="unit">${stats.customer15ServiceStartTime !== 'N/A' ? 'min after 9:00 AM' : ''}</div>
+                    <div class="unit">${stats.customer15ServiceStartTime !== 'N/A' ? 'min' : ''}</div>
                 </div>
             `;
             document.getElementById('summaryCards').innerHTML = summaryHTML;
