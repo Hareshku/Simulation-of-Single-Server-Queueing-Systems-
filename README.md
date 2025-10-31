@@ -2,7 +2,7 @@ This project presents a **simulation modeling system** designed to analyze and o
 
 The system allows users to either:
 
-Input random numbers manually, or
+- Input random numbers manually, or
 
 Auto-generate random numbers automatically through the program.
 
