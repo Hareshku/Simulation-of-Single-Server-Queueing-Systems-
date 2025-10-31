@@ -1,4 +1,4 @@
-This project presents a simulation modeling system designed to analyze and optimize single-server queueing problems in real-world service environments. The system simulates how customers arrive, wait, and get served at a service counter such as in a bank, grocery store, hospital reception, or customer support center. It models realistic waiting line behavior using probabilistic distributions for inter-arrival times and service times.
+This project presents a **simulation modeling system** designed to analyze and optimize **single-server queueing problems** in real-world service environments. The system simulates how customers arrive, wait, and get served at a service counter such as in **a bank, grocery store, hospital reception**, or **customer support center**. It models realistic waiting line behavior using probabilistic distributions for **inter-arrival times** and **service times**.
 
 The system allows users to either:
 
