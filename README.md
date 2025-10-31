@@ -21,3 +21,12 @@ The simulation was tested for **10, 15, 20, and 100 customers**, but it can easi
 - Time spent by individual customers in the system
 
 This project demonstrates the power of **discrete-event simulation** in evaluating service efficiency, identifying bottlenecks, and improving customer experience in environments where waiting and service time are uncertain.
+
+
+
+
+
+<img width="1882" height="562" alt="Screenshot 2025-11-01 001422" src="https://github.com/user-attachments/assets/26852b99-0d7c-437b-86b8-366370e71490" />
+<img width="1887" height="943" alt="Screenshot 2025-11-01 001524" src="https://github.com/user-attachments/assets/94a9fb89-54a5-408a-971e-cb4d1e76f0e0" />
+<img width="1891" height="556" alt="Screenshot 2025-11-01 001702" src="https://github.com/user-attachments/assets/d0585458-ecf9-4fef-a24a-cf7e86ed03d5" />
+<img width="1885" height="540" alt="Screenshot 2025-11-01 001716" src="https://github.com/user-attachments/assets/b3dbf23f-3f67-485c-b8ac-5555d551d594" />
