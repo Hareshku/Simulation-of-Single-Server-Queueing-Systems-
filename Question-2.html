@@ -365,6 +365,14 @@
                         <div class="help-text">Which customer's time in system to display (Card #4)</div>
                     </div>
                 </div>
+                <div class="form-row">
+                    <div>
+                        <label>Customer Number for Waiting Time</label>
+                        <input type="number" id="customerWaitingTime" value="10" min="1" placeholder="10">
+                        <div class="help-text">Which customer's waiting time to display (Card #5)</div>
+                    </div>
+                    <div></div>
+                </div>
             </div>
 
             <div id="manualRandomInputs" class="input-group hidden">
@@ -778,7 +786,12 @@
                 ? customers[customerNumForTimeInSystem - 1].timeInSystem
                 : 'N/A';
 
-            const customer10WaitingTime = customers.length >= 10 ? customers[9].waitingTime : 'N/A';
+            // Get dynamic customer number for waiting time (Card #5)
+            const customerNumForWaitingTime = parseInt(document.getElementById('customerWaitingTime').value) || 10;
+            const customerWaitingTime = (customerNumForWaitingTime > 0 && customerNumForWaitingTime <= customers.length)
+                ? customers[customerNumForWaitingTime - 1].waitingTime
+                : 'N/A';
+
             const customer12ArrivalTime = customers.length >= 12 ? customers[11].arrivalTime : 'N/A';
             const customer15ServiceStartTime = customers.length >= 15 ? customers[14].serviceBegins : 'N/A';
 
@@ -789,7 +802,8 @@
                 maxQueueLength,
                 customerTimeInSystem,
                 customerNumForTimeInSystem,
-                customer10WaitingTime,
+                customerWaitingTime,
+                customerNumForWaitingTime,
                 customer12ArrivalTime,
                 customer15ServiceStartTime
             });
@@ -821,9 +835,9 @@
                     <div class="unit">${stats.customerTimeInSystem !== 'N/A' ? 'minutes' : ''}</div>
                 </div>
                 <div class="card">
-                    <h3>5. Customer 10 Waiting Time</h3>
-                    <div class="value">${stats.customer10WaitingTime}</div>
-                    <div class="unit">${stats.customer10WaitingTime !== 'N/A' ? 'minutes' : ''}</div>
+                    <h3>5. Customer ${stats.customerNumForWaitingTime} Waiting Time</h3>
+                    <div class="value">${stats.customerWaitingTime}</div>
+                    <div class="unit">${stats.customerWaitingTime !== 'N/A' ? 'minutes' : ''}</div>
                 </div>
                 <div class="card">
                     <h3>6. Customer 12 Arrival Time</h3>
@@ -859,8 +873,8 @@
             `;
 
             customers.forEach(c => {
-                // Highlight the dynamic customer number along with static ones
-                const rowClass = (c.id === stats.customerNumForTimeInSystem || c.id === 10 || c.id === 12 || c.id === 15) ? 'highlight' : '';
+                // Highlight the dynamic customer numbers along with static ones
+                const rowClass = (c.id === stats.customerNumForTimeInSystem || c.id === stats.customerNumForWaitingTime || c.id === 12 || c.id === 15) ? 'highlight' : '';
                 tableHTML += `
                     <tr class="${rowClass}">
                         <td>${c.id}</td>
